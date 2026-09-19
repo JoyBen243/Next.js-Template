@@ -1,0 +1,22 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema.json",
+  "name": "nextjs-template-pro-mcp",
+  "version": "1.0.0",
+  "description": "Configuration MCP (Model Context Protocol) pour Next.js Template Pro et Google Stitch",
+  "mcpServers": {
+    "google-stitch": {
+      "command": "node",
+      "args": ["lib/mcp/google-stitch.js"],
+      "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}",
+        "GOOGLE_GENERATIVE_AI_API_KEY": "${GOOGLE_GENERATIVE_AI_API_KEY}"
+      },
+      "description": "Serveur MCP dédié à l'orchestration et l'intégration d'outils Google Stitch"
+    },
+    "database-tools": {
+      "command": "npx",
+      "args": ["prisma", "studio"],
+      "description": "Outils de gestion et d'exploration de la base de données Prisma"
+    }
+  }
+}

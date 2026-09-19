@@ -1,0 +1,36 @@
+// Schéma Prisma pour PostgreSQL hébergé sur Supabase avec support de l'extension pgvector
+// En Prisma 7, l'URL de connexion est définie dans prisma.config.ts
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../lib/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String?
+  password  String?    // Mot de passe haché (Bcrypt / Argon2) pour l'authentification locale
+  avatarUrl String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  documents Document[]
+}
+
+model Document {
+  id        String                  @id @default(uuid())
+  title     String
+  content   String
+  // Vecteur de dimension 1536 (OpenAI text-embedding-3-small) ou 768 (Google text-embedding-004)
+  embedding Unsupported("vector")?
+  userId    String?
+  user      User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+}
